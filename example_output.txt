@@ -1,0 +1,87 @@
+(1) SimpleJson installed, VT results but no Cymru or SS results
+---------------------------------------------------------------
+
+remnux@remnux:~/Desktop$ python FileLookup.py 8d1243db6fedbebf96cf446e278e5c155e8d57c98f213f5cd5e5629841178037 
+################################################################################
+File:	 8d1243db6fedbebf96cf446e278e5c155e8d57c98f213f5cd5e5629841178037
+################################################################################
+MD5:			6c81e843b52181a05cf5639dc42ddaf3
+Sha256:			8d1243db6fedbebf96cf446e278e5c155e8d57c98f213f5cd5e5629841178037
+VirusTotal:		
+	Scan Date:		Nov 19 2012
+	Total Engines:		43
+	Detected:		15
+
+	A/V Results:
+		ClamAV:		 TrojanDownloader:Java/Agent.J
+		Kaspersky:	 None
+		McAfee:		 Generic Downloader.x!gm3
+		Microsoft:	 TrojanDownloader:Java/Agent.J
+		Sophos:		 Troj/JavaDl-SI
+		Symantec:	 Trojan.Maljava
+	Link: https://www.virustotal.com/file/8d1243db6fedbebf96cf446e278e5c155e8d57c98f213f5cd5e5629841178037/analysis/1353343783/
+Cymru:			
+	Last Seen:		Nov 20 2012
+	Detected:		NO_DATA
+ShadowServer A/V:		No Match
+ShadowServer Known:		No Match
+
+------------------------------------------------
+(2) SimpleJson installed, VT, Cymru & SS results
+------------------------------------------------
+
+remnux@remnux:~/Desktop$ python FileLookup.py 7E3770351AED43FD6C5CAB8E06DC0300_doc 
+################################################################################
+File:	 7E3770351AED43FD6C5CAB8E06DC0300_doc
+################################################################################
+MD5:			7e3770351aed43fd6c5cab8e06dc0300
+Sha256:			742db588c3cfa416215619db34e168be58846058f7528adee8358bb8b8b68fe3
+VirusTotal:		
+	Scan Date:		Oct 21 2012
+	Total Engines:	 	44
+	Detected:	 	29
+
+	A/V Results:
+		ClamAV:		 Exploit:SWF/CVE-2012-1535.A
+		Kaspersky:	 Exploit.SWF.Agent.gq
+		McAfee:		 Exploit-CVE2012-1535
+		Microsoft:	 Exploit:SWF/CVE-2012-1535.A
+		Sophos:		 Troj/SwfExp-BB
+		Symantec:	 Trojan.Mdropper
+	Link: https://www.virustotal.com/file/742db588c3cfa416215619db34e168be58846058f7528adee8358bb8b8b68fe3/analysis/1350797932/
+Cymru:			
+	Last Seen:		Aug 16 2012
+	Detected:		27
+ShadowServer A/V:	
+	First Seen:		Aug 18 2012
+	Last Seen:		Aug 18 2012
+
+	A/V Results:
+				N/A
+ShadowServer Known:		No Match
+
+---------------------------------------------------
+(3) No SimpleJson instaleld, VT, Cymru & SS results
+---------------------------------------------------
+C:\tools\>python FileLookup.py 3770351AED43FD6C5CAB8E06DC0300_doc
+################################################################################
+File:    7E3770351AED43FD6C5CAB8E06DC0300_doc
+################################################################################
+MD5:                    7e3770351aed43fd6c5cab8e06dc0300
+Sha256:                 742db588c3cfa416215619db34e168be58846058f7528adee8358bb8b8b68fe3
+VirusTotal:
+        Scan Date:      Oct 21 2012
+        Total Engines:  44
+        Detected:       29
+Cymru:
+        Last Seen:      Aug 16 2012
+        Detected:       27
+ShadowServer A/V:
+        First Seen:     Aug 18 2012
+        Last Seen:      Aug 18 2012
+
+        A/V Results:
+                        N/A
+ShadowServer Known:     No Match
+
+
