@@ -2,7 +2,7 @@
 #	http://hiddenillusion.blogspot.com
 #		@hiddenillusion
 # Date: 10-23-2012
-# version = 0.2.1
+# version = 0.2.2
 
 # Requirements:
 #	- Internet Access :)
@@ -197,7 +197,7 @@ def ss_av(file):
 
     if "No match" in result:
         result = "No Match"
-    elif "Whitlisted" in result:
+    elif "Whitelisted" in result:
         result = "Whitelisted"
     else:
         lines = result.split('\n')
