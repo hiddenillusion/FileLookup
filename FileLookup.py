@@ -2,7 +2,7 @@
 #	http://hiddenillusion.blogspot.com
 #		@hiddenillusion
 # Date: 10-23-2012
-# version = 0.2.2
+# version = 0.2.3
 
 # Requirements:
 #	- Internet Access :)
@@ -12,6 +12,7 @@
 # To-Do:
 #	- parse raw VT results so API key isn't required (but basic results returned)
 #	- Bit9 File Advisor, ThreatExpert
+#	- OpenMalware (http://oc.gtisc.gatech.edu:8080/search.cgi?search=)
 #	- Threading
 #	- Pretty up the code
 
@@ -34,7 +35,7 @@ except ImportError:
     pass
 
 # Configure some user-specific info
-vt_key = "YOUR_API_KEY"
+vt_key = "3560710654e67bafa53b429c65f159a2d560a51fcfb09104084d2059ac152b69"
 if not re.match('\d+', vt_key):
     print "[!] You must configure your VirusTotal API key"
     sys.exit()
@@ -49,12 +50,7 @@ def main():
     # Verify supplied path exists or die
     if not os.path.exists(args['Path']):
         print "[!] The supplied path does not exist"
-        sys.exit()
-
-    # Verify supplied path exists or die
-    if not os.path.exists(args['Path']):
-        print "[!] The supplied path does not exist"
-        sys.exit()		
+        sys.exit()	
 		
     def doWork(file):		
         results = []
