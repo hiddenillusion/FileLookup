@@ -61,7 +61,7 @@ ShadowServer A/V:
 ShadowServer Known:		No Match
 
 ---------------------------------------------------
-(3) No SimpleJson instaleld, VT, Cymru & SS results
+(3) No SimpleJson installed, VT, Cymru & SS results
 ---------------------------------------------------
 C:\tools\>python FileLookup.py 3770351AED43FD6C5CAB8E06DC0300_doc
 ################################################################################
@@ -84,4 +84,65 @@ ShadowServer A/V:
                         N/A
 ShadowServer Known:     No Match
 
+-------------------------------------------------------------
+(4) av_mutliscan with out lookup integration of FileLookup
+-------------------------------------------------------------
 
+remnux@remnux:~/Desktop$ av_multiscan.py -f file.exe 
+Scanning: /
+################################################################################
+File:	 file.exe
+################################################################################
+filesize:		91296 bytes
+md5:			2d29ce731221bedfebc9f352b7bb7c5d
+sha1:			6fd78a30ecff3b7198352cfd0ed6943c64de6bce
+sha256:			9f1e0410f3bcc260cbc4bcbd9c9b4c8268181e81b7a1a34973f013cf3cd92800
+ssdeep:			1536:6CxUICz7AzOPArbISP7l7VIMRm4Oh+ljTzjLjTzjsjTzj1jTzjDEKQWCqT:f60SPArbDPxqMRbOhGTfXTfATfhTfDEW
+clamav:			OK
+clam_custom:		OK
+yara:			'suspicious' 'Keylogger' 'shellcode_at_EP' 
+yara_magic:		'mz_executable' 
+yara_packer:		No Match
+officemalscanner:	Not an MS Office file
+f-prot:			No Match
+mcafee:			No Match
+
+-------------------------------------------------------------
+(5) av_mutliscan with online lookup integration of FileLookup
+-------------------------------------------------------------
+remnux@remnux:~/Desktop$ av_multiscan.py -o -f file.exe 
+Scanning: /
+################################################################################
+File:	 file.exe
+################################################################################
+filesize:		91296 bytes
+md5:			2d29ce731221bedfebc9f352b7bb7c5d
+sha1:			6fd78a30ecff3b7198352cfd0ed6943c64de6bce
+sha256:			9f1e0410f3bcc260cbc4bcbd9c9b4c8268181e81b7a1a34973f013cf3cd92800
+ssdeep:			1536:6CxUICz7AzOPArbISP7l7VIMRm4Oh+ljTzjLjTzjsjTzj1jTzjDEKQWCqT:f60SPArbDPxqMRbOhGTfXTfATfhTfDEW
+clamav:			OK
+clam_custom:		OK
+yara:			'suspicious' 'Keylogger' 'shellcode_at_EP' 
+yara_magic:		'mz_executable' 
+yara_packer:		No Match
+officemalscanner:	Not an MS Office file
+f-prot:			No Match
+mcafee:			No Match
+ShadowServer AV:	No Match
+ShadowServer Known:	No Match
+Cymru: 
+	Last Seen:	Dec 28 2012
+	Detected:	NO_DATA
+VirusTotal: 
+	Scan Date:	 Dec 20 2012
+	Total Engines:	 43
+	Detected:	 3
+
+	A/V Results:
+			ClamAV:		 None
+			Kaspersky:	 None
+			McAfee:		 None
+			Microsoft:	 None
+			Sophos:		 None
+			Symantec:	 None
+	Link: https://www.virustotal.com/file/9f1e0410f3bcc260cbc4bcbd9c9b4c8268181e81b7a1a34973f013cf3cd92800/analysis/1356010834/

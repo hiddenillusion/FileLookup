@@ -121,7 +121,7 @@ def virustotal(file):
             out.append("\tDetected:\t %s" % rpt["positives"])
             out.append('')
             out.append("\tA/V Results:")
-            out.append("\t\t\tClamAV:\t\t %s" % rpt["scans"]["Microsoft"]["result"])
+            out.append("\t\t\tClamAV:\t\t %s" % rpt["scans"]["ClamAV"]["result"])
             out.append("\t\t\tKaspersky:\t %s" % rpt["scans"]["Kaspersky"]["result"])
             out.append("\t\t\tMcAfee:\t\t %s" % rpt["scans"]["McAfee"]["result"])
             out.append("\t\t\tMicrosoft:\t %s" % rpt["scans"]["Microsoft"]["result"])
