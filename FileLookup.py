@@ -2,7 +2,7 @@
 #	http://hiddenillusion.blogspot.com
 #		@hiddenillusion
 # Date: 10-23-2012
-# version = 0.2.3
+# version = 0.3
 
 # Requirements:
 #	- Internet Access :)
@@ -10,7 +10,6 @@
 # Optional:
 #	- SimpleJson module to print the pretty reports (optional but is nicer)
 # To-Do:
-#	- parse raw VT results so API key isn't required (but basic results returned)
 #	- Bit9 File Advisor, ThreatExpert
 #	- OpenMalware (http://oc.gtisc.gatech.edu:8080/search.cgi?search=)
 #	- Threading
@@ -35,7 +34,7 @@ except ImportError:
     pass
 
 # Configure some user-specific info
-vt_key = "3560710654e67bafa53b429c65f159a2d560a51fcfb09104084d2059ac152b69"
+vt_key = ""
 if not re.match('\d+', vt_key):
     print "[!] You must configure your VirusTotal API key"
     sys.exit()
@@ -43,40 +42,62 @@ if not re.match('\d+', vt_key):
 def main():
     # Get program args
     parser = argparse.ArgumentParser(description='Searches various online resources to try and get as much info about a file as possible without submitting it, requiring third party modules or performing any analysis on the file.')
-    parser.add_argument('Path', help='Path to directory/file(s) to be scanned')
+    parser.add_argument('-f', '--file', help='Path to directory/file(s) to be scanned')
+    parser.add_argument('-H', '--hash', help='MD5 hash to be queried')
     
     args = vars(parser.parse_args())
 
-    # Verify supplied path exists or die
-    if not os.path.exists(args['Path']):
-        print "[!] The supplied path does not exist"
-        sys.exit()	
-		
-    def doWork(file):		
+    md5 = ''
+			
+    def doWork(obj):
+        if args['hash']: 
+            md5 = args['hash']	
+        else:
+            md5 = md5sum(file)
         results = []
-        results.append(("#" * 80) + "\nFile:\t %s\n" % file + ("#" * 80))
-        results.append("MD5:\t\t\t%s" % md5(file))
-        results.append("Sha256:\t\t\t%s" % sha256(file))	
-        results.append("VirusTotal:\t\t%s" % virustotal(file))		
-        results.append("Cymru:\t\t\t%s" % cymru(file))
-        results.append("ShadowServer A/V:\t%s" % ss_av(file))
-        results.append("ShadowServer Known:\t%s" % ss_known(file))		
+        results.append(("#" * 80) + "\nFile:\t %s\n" % obj + ("#" * 80))
+        results.append("MD5:\t\t\t%s" % md5)
+        if args['file']:		
+            results.append("Sha256:\t\t\t%s" % sha256sum(file))	
+        results.append("VirusTotal:\t\t%s" % virustotal(md5))		
+        results.append("Cymru:\t\t\t%s" % cymru(md5))
+        results.append("ShadowServer A/V:\t%s" % ss_av(md5))
+        results.append("ShadowServer Known:\t%s" % ss_known(md5))		
         results.append("")
 		
-        print '\n'.join(results)
+        print '\n'.join(results)	
 		
-	# Set the path to file(s)
-    file = args['Path']	
-    if os.path.isdir(file):
-        # Recursivly walk the supplied path and process files accordingly
-        for root, dirs, files in os.walk(file):
-            for name in files: 
-                f = os.path.join(root, name)	
-                doWork(f)				
-    elif os.path.isfile(file):
-        doWork(file)		
+    # Verify we have something to do
+    if not args['file'] and not args['hash']:
+        print "[!] I need something to do"
+        sys.exit()
+		
+    # Verify supplied path exists or die
+    if args['file']:
+        if not os.path.exists(args['file']):
+            print "[!] The supplied path does not exist"
+            sys.exit()
+        else:
+	        # Set the path to file(s)
+            file = args['file']	
+            if os.path.isdir(file):
+                # Recursivly walk the supplied path and process files accordingly
+                for root, dirs, files in os.walk(file):
+                    for name in files: 
+                        f = os.path.join(root, name)	
+                        doWork(f)				
+            elif os.path.isfile(file):
+                doWork(file)			
+
+    # Verify the hash is legit
+    if args['hash']:
+        if not re.findall(r"([a-fA-F\d]{32})", args['hash']):
+            print "[!] The supplied path does not exist"
+            sys.exit()	
+        else:	
+            doWork(args['hash'])
 	
-def md5(file):
+def md5sum(file):
     try:
         f = open(file, "rb")
         data = f.read()
@@ -87,7 +108,7 @@ def md5(file):
 
     return md5
 
-def sha256(file):
+def sha256sum(file):
     try:
         f = open(file, "rb")
         data = f.read()
@@ -98,12 +119,12 @@ def sha256(file):
 
     return sha256
 
-def virustotal(file):
+def virustotal(hash):
     """
     Return percent of A/V hits from VirusTotal scan report of the file if one exists.
     """
     url = "https://www.virustotal.com/vtapi/v2/file/report"
-    parameters = {"resource": md5(file), "apikey": vt_key}
+    parameters = {"resource": hash, "apikey": vt_key}
     data = urllib.urlencode(parameters)
     req = urllib2.Request(url, data)
     response = urllib2.urlopen(req)
@@ -121,7 +142,7 @@ def virustotal(file):
             out.append("\tDetected:\t %s" % rpt["positives"])
             out.append('')
             out.append("\tA/V Results:")
-            out.append("\t\t\tClamAV:\t\t %s" % rpt["scans"]["ClamAV"]["result"])
+            out.append("\t\t\tClamAV:\t\t %s" % rpt["scans"]["Microsoft"]["result"])
             out.append("\t\t\tKaspersky:\t %s" % rpt["scans"]["Kaspersky"]["result"])
             out.append("\t\t\tMcAfee:\t\t %s" % rpt["scans"]["McAfee"]["result"])
             out.append("\t\t\tMicrosoft:\t %s" % rpt["scans"]["Microsoft"]["result"])
@@ -150,14 +171,14 @@ def virustotal(file):
         result = "No Match"	
         return result
 		
-def ss_known(file):
+def ss_known(hash):
     """
     Based off original by:  Jose Nazario (jose@arbor.net)
     site : http://bin-test.shadowserver.org
     """
     url = "http://bin-test.shadowserver.org/api"
     data = {}
-    data['md5'] = md5(file)
+    data['md5'] = hash
     url_vals = urllib.urlencode(data)
     req = urllib2.Request(url, data)
     full_url = url + '?' + url_vals
@@ -177,14 +198,14 @@ def ss_known(file):
 			
     return result
 	
-def ss_av(file):
+def ss_av(hash):
     """
     Based off original by:  Jose Nazario (jose@arbor.net)
     site : http://innocuous.shadowserver.org/api/?query=#md5-or-sha1#	
     """
     url = "http://innocuous.shadowserver.org/api/"
     data = {}
-    data['query'] = md5(file)
+    data['query'] = hash
     url_vals = urllib.urlencode(data)
     req = urllib2.Request(url, data)
     full_url = url + '?' + url_vals
@@ -193,7 +214,7 @@ def ss_av(file):
 
     if "No match" in result:
         result = "No Match"
-    elif "Whitelisted" in result:
+    elif "Whitlisted" in result:
         result = "Whitelisted"
     else:
         lines = result.split('\n')
@@ -219,13 +240,13 @@ def ss_av(file):
 
     return result
 
-def cymru(file):
+def cymru(hash):
     """
     Return Team Cymru Malware Hash Database results.
     source: http://code.google.com/p/malwarecookbook/
     site : http://www.team-cymru.org/Services/MHR/
     """
-    request = '%s\r\n' % md5(file)
+    request = '%s\r\n' % hash
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s.connect(('hash.cymru.com', 43))
