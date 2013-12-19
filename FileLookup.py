@@ -2,7 +2,7 @@
 #	http://hiddenillusion.blogspot.com
 #		@hiddenillusion
 # Date: 10-23-2012
-# version = 0.3
+# version = 0.3.1
 
 # Requirements:
 #	- Internet Access :)
@@ -10,10 +10,11 @@
 # Optional:
 #	- SimpleJson module to print the pretty reports (optional but is nicer)
 # To-Do:
-#	- Bit9 File Advisor, ThreatExpert
+#	- Bit9 File Advisor
 #	- OpenMalware (http://oc.gtisc.gatech.edu:8080/search.cgi?search=)
 #	- Threading
 #	- Pretty up the code
+#	- This really would be easier if I used BS4 in the beginning :/
 
 import os
 import sys
@@ -62,7 +63,8 @@ def main():
         results.append("VirusTotal:\t\t%s" % virustotal(md5))		
         results.append("Cymru:\t\t\t%s" % cymru(md5))
         results.append("ShadowServer A/V:\t%s" % ss_av(md5))
-        results.append("ShadowServer Known:\t%s" % ss_known(md5))		
+        results.append("ShadowServer Known:\t%s" % ss_known(md5))	
+        results.append("ThreatExpert Known:\t%s" % threatexpert(md5)) 		
         results.append("")
 		
         print '\n'.join(results)	
@@ -264,6 +266,27 @@ def cymru(hash):
         result = "Error"
 		
     return result		
+	
+def threatexpert(hash):
+    """
+    Return existence of report in ThreatExpert database.
+    site   : http://www.threatexpert.com
+	credit : Added 11/29/2012 by Keith Gilbert - @digital4rensics  
+	note   : Greatly increases time required  
+    """
+    result = []		
+    url = 'http://threatexpert.com/report.aspx?md5=' + hash
+    try:
+        page = urllib2.urlopen(url).read()
+        for line in page.split('\n'):
+            if line.find('Submission Summary:'):
+               result.append("Report Found")
+               result.append("\tLink: %s" % url)	
+               return '\n'.join(result)
+            else:
+                return "No Match"
+    except Exception:
+        return "Error"	
 
 if __name__ == "__main__":
 	main()  
