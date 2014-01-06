@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # FileLookup.py was created by Glenn P. Edwards Jr.
 #	http://hiddenillusion.blogspot.com
 #		@hiddenillusion
